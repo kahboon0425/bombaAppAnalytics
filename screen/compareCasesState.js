@@ -73,7 +73,6 @@ const CompareCasesState = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = (item) => {
     setSelectedItem(item);
-    console.log(item.year, "iyemtt");
     firebase
       .firestore()
       .collection("EmergencyReport")
@@ -285,7 +284,6 @@ const CompareCasesState = ({ navigation }) => {
 export default CompareCasesState;
 const styles = StyleSheet.create({
   container: {
-    // padding:12,
     height: "100%",
   },
   title: {
@@ -308,13 +306,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   scrollView: {
-    // backgroundColor: 'pink',
     marginHorizontal: 20,
   },
   calender_box: {
     margin: 20,
     flex: 1,
-    // backgroundColor:"dodgerblue",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "black",

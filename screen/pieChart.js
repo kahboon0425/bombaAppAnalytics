@@ -64,19 +64,13 @@ let years = [
 ];
 
 const PieChart = ({ navigation }) => {
-  let testing = [];
-  const [emergencyData, setEmergencyData] = useState([]);
   const [pieTotal, setPieTotal] = useState([]);
-  let today = new Date();
-  let date = today.getFullYear();
 
   let allEmergencyData = [];
-  const legendData = [{ name: "Flood" }, { name: "Fire" }];
 
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = (item) => {
     setSelectedItem(item);
-    console.log(item.year, "iyemtt");
     firebase
       .firestore()
       .collection("EmergencyReport")
@@ -94,7 +88,6 @@ const PieChart = ({ navigation }) => {
         for (const key in allEmergencyData) {
           let reasonData = allEmergencyData[key].reason;
           let year = allEmergencyData[key].date.slice(0, 4);
-          console.log(reasonData);
           if (reasonData === "flood" && year == item.year) {
             countOfFlood += 1;
           }
@@ -110,7 +103,6 @@ const PieChart = ({ navigation }) => {
         dictOfCasesList.push(dictOfFireCases);
         totalCasesGraph["TotalCases"] = dictOfCasesList;
         setPieTotal(totalCasesGraph);
-        console.log(totalCasesGraph, " kyyu");
       });
   };
 
@@ -124,9 +116,6 @@ const PieChart = ({ navigation }) => {
       <View style={styles.container_1}>
         <View style={styles.legend_container}>
           <VictoryLegend
-            // x={Dimensions.get('screen').width/2-100}
-            // orientation='horizontal'
-            // y={5}
             gutter={20}
             data={[
               {
@@ -147,12 +136,7 @@ const PieChart = ({ navigation }) => {
         <View style={styles.container_2}>
           <VictoryPie
             height={350}
-            // padding={{
-            //     left: 100, bottom: 50, top: 20
-            // }}
-            // marginBottom={100}
             alignItems="left"
-            // paddingTop={0}
             colorScale={["orange", "black"]}
             data={pieTotal.TotalCases}
             labels={({ datum }) => `${datum.y}`}
@@ -178,10 +162,9 @@ export default PieChart;
 
 const styles = StyleSheet.create({
   top: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    // paddingTop: 20,
-    paddingLeft: 10,
+    paddingLeft: 20,
   },
   bottom: {
     marginLeft: 12,
@@ -192,23 +175,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   scrollView: {
-    // backgroundColor: 'pink',
     marginHorizontal: 20,
   },
   calender_box: {
     margin: 20,
     flex: 1,
-    // backgroundColor:"dodgerblue",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "black",
     borderRadius: 10,
   },
   container_1: {
-    // flex:1,
-    // backgroundColor:"dodgerblue",
-    // alignItems:'center',
-    // justifyContent:'center',
     marginTop: 20,
     marginLeft: 10,
     marginRight: 10,

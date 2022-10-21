@@ -71,7 +71,6 @@ const NewBarChart = ({ navigation }) => {
   let today = new Date();
   let date = today.getFullYear();
 
-  const [emergencyData, setEmergencyData] = useState([]);
   const [casesList, setCasesList] = useState([]);
   const [useDate, setDate] = useState();
 
@@ -86,10 +85,7 @@ const NewBarChart = ({ navigation }) => {
       .collection("EmergencyReport")
       .get()
       .then((querySnapshot) => {
-        // console.log('Total Emergency: ', querySnapshot.size);
-
         querySnapshot.forEach((documentSnapshot) => {
-          // console.log('Emergency ID: ', documentSnapshot.id, documentSnapshot.data());
           data.push(documentSnapshot.data());
           console.log(documentSnapshot.data(), "herehere");
         });
@@ -168,92 +164,6 @@ const NewBarChart = ({ navigation }) => {
     monthlyCasesGraph["Fire"] = monthlyCasesFireList;
     setCasesList(monthlyCasesGraph);
   };
-  //   useEffect(() => {
-  //     const subscriber = firebase
-  //       .firestore()
-  //       .collection("EmergencyReport")
-  //       .get()
-  //       .then((querySnapshot) => {
-  //         // console.log('Total Emergency: ', querySnapshot.size);
-
-  //         querySnapshot.forEach((documentSnapshot) => {
-  //           // console.log('Emergency ID: ', documentSnapshot.id, documentSnapshot.data());
-  //           allEmergencyData.push(documentSnapshot.data());
-  //           console.log(documentSnapshot.data());
-  //         });
-
-  //         let countFireCases = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  //         let countFloodCases = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  //         let allMonth = [
-  //           "Jan",
-  //           "Feb",
-  //           "Mar",
-  //           "Apr",
-  //           "May",
-  //           "Jun",
-  //           "Jul",
-  //           "Aug",
-  //           "Sep",
-  //           "Oct",
-  //           "Nov",
-  //           "Dec",
-  //         ];
-  //         let monthDigit = [
-  //           "01",
-  //           "02",
-  //           "03",
-  //           "04",
-  //           "05",
-  //           "06",
-  //           "07",
-  //           "08",
-  //           "09",
-  //           "10",
-  //           "11",
-  //           "12",
-  //         ];
-  //         let monthlyFloodCases = {};
-  //         let monthlyFireCases = {};
-  //         let monthlyCasesFloodList = [];
-  //         let monthlyCasesFireList = [];
-
-  //         for (const key in allEmergencyData) {
-  //           let reasonData = allEmergencyData[key].reason;
-  //           let newReason = reasonData.replace(/[,.]/g, "");
-  //           let formatReasonData = newReason.toLowerCase();
-  //           let month = allEmergencyData[key].date.slice(5, 7);
-  //           let year = allEmergencyData[key].date.slice(0, 4);
-
-  //           for (let m in monthDigit) {
-  //             if (month === monthDigit[m] && year == date) {
-  //               let indexSelected = monthDigit.indexOf(month);
-  //               if (formatReasonData.includes("flood")) {
-  //                 countFloodCases[indexSelected] += 1;
-  //               } else if (formatReasonData.includes("fire")) {
-  //                 countFireCases[indexSelected] += 1;
-  //               }
-  //             }
-  //           }
-  //         }
-
-  //         for (let c in allMonth) {
-  //           monthlyFloodCases["x"] = allMonth[c];
-  //           monthlyFloodCases["y"] = countFloodCases[c];
-  //           monthlyCasesFloodList.push(monthlyFloodCases);
-  //           monthlyFloodCases = {};
-  //           monthlyFireCases["x"] = allMonth[c];
-  //           monthlyFireCases["y"] = countFireCases[c];
-  //           monthlyCasesFireList.push(monthlyFireCases);
-  //           monthlyFireCases = {};
-  //         }
-
-  //         monthlyCasesGraph["Flood"] = monthlyCasesFloodList;
-  //         monthlyCasesGraph["Fire"] = monthlyCasesFireList;
-
-  //         setCasesList(monthlyCasesGraph, "eeeee");
-  //       });
-  //     return () => subscriber();
-  //   }, []);
 
   useEffect(() => {
     const emergencyData = getEmergencyData();
@@ -266,7 +176,6 @@ const NewBarChart = ({ navigation }) => {
     setSelectedItem(item);
     console.log(item.year, "iyemtt");
     setDate(item.year);
-    let testing = [];
     let allEmergencyData = [];
 
     firebase
@@ -277,7 +186,6 @@ const NewBarChart = ({ navigation }) => {
         querySnapshot.forEach((documentSnapshot) => {
           allEmergencyData.push(documentSnapshot.data());
         });
-        setEmergencyData(allEmergencyData);
 
         let countFireCases = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         let countFloodCases = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -322,7 +230,6 @@ const NewBarChart = ({ navigation }) => {
           let formatReasonData = newReason.toLowerCase();
           let month = allEmergencyData[key].date.slice(5, 7);
           let year = allEmergencyData[key].date.slice(0, 4);
-          console.log(year, "yearyearyear");
 
           for (let m in monthDigit) {
             if (month === monthDigit[m] && year == item.year) {
@@ -380,15 +287,11 @@ const NewBarChart = ({ navigation }) => {
               <VictoryAxis
                 tickFormat={(t) => (Number.isInteger(t) ? t : null)}
                 dependentAxis
-                // tickValues={[1, 2, 3, 4,5]}
-                // dependentAxis
                 axisLabelComponent={<VictoryLabel dy={-30} />}
                 label="Total Number of Cases"
                 style={{ padding: "50px" }}
               />
               <VictoryGroup offset={12}>
-                {/* labels={({ datum }) => `y: ${datum.y}`} */}
-
                 <VictoryBar
                   barWidth={10}
                   animate
@@ -446,13 +349,11 @@ const NewBarChart = ({ navigation }) => {
 export default NewBarChart;
 const styles = StyleSheet.create({
   container: {
-    // padding:12,
     height: "100%",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    // paddingTop: 30,
     paddingLeft: 20,
     marginBottom: 10,
   },
@@ -470,13 +371,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   scrollView: {
-    // backgroundColor: 'pink',
     marginHorizontal: 20,
   },
   calender_box: {
     margin: 20,
     flex: 1,
-    // backgroundColor:"dodgerblue",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "black",

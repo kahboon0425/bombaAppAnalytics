@@ -69,7 +69,6 @@ let years = [
 
 const DistrictPieFire = ({ navigation }) => {
   const [pieTotal, setPieTotal] = useState([]);
-  const [countTotal, setcountTotal] = useState();
   const [stateSelected, setStateSelected] = useState("Select a state");
   const [yearSelected, setYear] = useState(null);
   let today = new Date();
@@ -77,11 +76,8 @@ const DistrictPieFire = ({ navigation }) => {
 
   let allEmergencyData = [];
 
-  const [emergencyData, setEmergencyData] = useState([]);
-
   const [fireFlatList, setFireFlatList] = useState([]);
   function districtOfArea(stateSelected) {
-    let testing = [];
     let allEmergencyData = [];
 
     firebase
@@ -92,10 +88,6 @@ const DistrictPieFire = ({ navigation }) => {
         querySnapshot.forEach((documentSnapshot) => {
           allEmergencyData.push(documentSnapshot.data());
         });
-        testing = allEmergencyData;
-        // console.log('Data fetch: ', allEmergencyData);
-        let myTry = "2022";
-        setEmergencyData(allEmergencyData);
 
         let flatListDict = {};
         let listOfFlatDict = [];
@@ -363,7 +355,6 @@ const DistrictPieFire = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = (item) => {
     setSelectedItem(item);
-    console.log(item.year, "iyemtt");
     setYear(item.year);
     firebase
       .firestore()
@@ -378,9 +369,6 @@ const DistrictPieFire = ({ navigation }) => {
         let dictOfCasesCount = {};
         let listOfDictOfCasesCount = [];
         let finalResult = {};
-
-        let flatListDict = {};
-        let listOfFlatDict = [];
 
         let formattedState = [];
 
@@ -423,11 +411,8 @@ const DistrictPieFire = ({ navigation }) => {
               let indexSelected = formattedState.indexOf(formatState);
               count[indexSelected] += 1;
             }
-
-            setcountTotal(count);
           }
         }
-        // console.log(count,"jjjjj")
         for (let a in states) {
           dictOfCasesCount["x"] = states[a];
           dictOfCasesCount["y"] = count[a];
@@ -451,7 +436,6 @@ const DistrictPieFire = ({ navigation }) => {
       <View style={styles.container_1}>
         <View style={styles.container_2}>
           <VictoryPie
-            // standalone={false}
             width={600}
             height={280}
             style={{
@@ -499,9 +483,6 @@ const DistrictPieFire = ({ navigation }) => {
                       {
                         target: "labels",
                         mutation: (props) => {
-                          console.log("-----------");
-                          console.log("text: ", props);
-                          console.log("text: ", props.datum["x"]);
                           districtOfArea(props.datum["x"]);
                           setStateSelected(props.datum["x"]);
                           return props.style.fill === "white"
@@ -565,9 +546,9 @@ const styles = StyleSheet.create({
     height: 50,
   },
   top: {
+    marginBottom: 10,
     fontSize: 18,
     fontWeight: "bold",
-    // paddingLeft:10,
     alignSelf: "center",
   },
   bottom: {
@@ -579,24 +560,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   scrollView: {
-    // backgroundColor: 'pink',
     marginHorizontal: 20,
   },
   calender_box: {
     margin: 20,
     flex: 1,
-    // backgroundColor:"dodgerblue",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "black",
     borderRadius: 10,
   },
   container_1: {
-    // flex:1,
-    // backgroundColor:"dodgerblue",
-    // alignItems:'center',
-    // justifyContent:'center',
-    // marginTop: 5,
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: "#DDDDDD",
@@ -622,7 +596,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     height: 150,
-    // alignSelf:'center',
     elevation: 3,
     width: 330,
     alignSelf: "center",
@@ -631,18 +604,15 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 15,
     marginTop: 5,
-    // fontWeight:'bold',
   },
 
   legend_container: {
-    // flex:1,
     width: 50,
     height: 50,
   },
   title: {
-    // padding: 10,
     paddingBottom: 12,
-    paddingTop: 9,
+    paddingTop: 5,
     fontSize: 16,
     marginTop: 3,
     fontWeight: "bold",
